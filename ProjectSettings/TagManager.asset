@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
+  - GameManager
+  - Pawn
   layers:
   - Default
   - TransparentFX
@@ -43,11 +44,14 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Ground
-    uniqueID: 3124654687
+    uniqueID: 4103772901
     locked: 0
-  - name: Props
-    uniqueID: 1377822951
+  - name: Walls
+    uniqueID: 2409394647
     locked: 0
-  - name: Background
-    uniqueID: 3360194063
+  - name: Entities
+    uniqueID: 3589461007
+    locked: 0
+  - name: UI
+    uniqueID: 3975236011
     locked: 0

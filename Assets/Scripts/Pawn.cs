@@ -1,115 +1,108 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class Pawn : MonoBehaviour
 {
-    //for pawn's animator
-    public Animator anim;
-    //for pawn's Rigidbody2D
-    public Rigidbody2D rb;
-    //game object's sprite renderer
-    public SpriteRenderer sr;
+    public GameObject thisPawn; //to hold this pawn object
+    private Transform tf; //hold pawn tf
+    public Transform attackPoint; //the transform of attack point empty
+    public float speed; //movement speed
+    public float rotateSpeed; //for pawn rotation
+    public float attackRange; //for attack range
+    public float hp; //to hold the pawn's helf value
+    public float maxHp; //to hold the max health a pawn has
+    public float damage;
+    public float noiseDistance;
 
-    //for paw speed
-    public float speed;
-    //for pawn jump height
-    public float jumpForce;
-    //float for grounding distance
-    public float groundingDistance;
-
-    [Header("Animation Thresholds")]
-    //float for jump animation threshold
-    public float yThreshold;
-    //float for walk animation threshold
-    public float xThreshold;
-    
-
+    [Header("AI Stuff")]
+    public Transform targetTf; //AI look towards lock
+    public float chaseRange; //for chase range
+    public float closeEnough; //close enough distance to waypoint
+    public float viewRadius; 
+    public float fieldOfView; //for Ai field of view
 
     void Start()
     {
-        //get components of game object
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
+        //get the transform of object you are attached to
+        tf = GetComponent<Transform>();
+        //set hp to max
+        hp = maxHp;
     }
 
-    void Update()
+    public void Move(float direction)
     {
-        UpdateAnimations();
+        //create a new vector 3 equal to pawn position
+        Vector3 pawnPos = transform.position;
+        //add our desired movement direction to it
+        pawnPos += transform.right * direction * speed * Time.deltaTime;
+        //set z to zero because it was being weird
+        pawnPos.z = 0;
+        //set our transform equal to pawn position
+        transform.position = pawnPos;
     }
 
-    //**************************
-    //TODO fix walk animation
-    //**************************
-
-    //method for animations
-    public void UpdateAnimations() 
+    public void Rotate(float direction)
     {
-        if (rb.velocity.x > 0 && rb.velocity.y == 0)
+        //pawn rotation
+        transform.Rotate(transform.forward * direction * rotateSpeed * Time.deltaTime * -1);
+    }
+
+    public void TakeDamage(float damage) 
+    {
+        //damage is subtracted from hp
+        hp -= damage; 
+    }
+
+    public void LookTowards() 
+    {
+        ////get the direction to face
+        Vector3 targetLock = targetTf.position - transform.position;
+        //rotate to look at target
+        transform.right = targetLock;
+    }
+    public void Attack() 
+    {
+        //Detect all enemies in range of attack
+        Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRange);
+        //damage them
+        foreach (Collider2D entities in hits) 
         {
-            sr.flipX = false;
-            anim.Play("Player1Walk2");
-        }
-        else if (rb.velocity.x < 0 && rb.velocity.y == 0)
-        {
-            sr.flipX = true;
-            anim.Play("Player1Walk2");
-        }
-        else if (rb.velocity.y > 0 && rb.velocity.x < 0)
-        {
-            sr.flipX = true;
-            anim.Play("Player1Jump");
-        }
-        else if (rb.velocity.y > 0 && rb.velocity.x > 0)
-        {
-            sr.flipX = false;
-            anim.Play("Player1Jump");
-        }
-        else if (rb.velocity.y < 0 && rb.velocity.x < 0)
-        {
-            sr.flipX = true;
-            anim.Play("Player1Jump");
-        }
-        else if (rb.velocity.y < 0 && rb.velocity.x > 0)
-        {
-            sr.flipX = false;
-            anim.Play("Player1Jump");
-        }
-        else
-        {
-            anim.Play("Player1Idle");
+            Debug.Log("HIT");
         }
     }
 
-    public void Move(Vector3 direction)
+    //to show attack range visually
+    private void OnDrawGizmosSelected()
     {
-        //move the rigidbody by x input multiplied by speed. pass y axis 0
-        rb.velocity = new Vector3(direction.x * speed, rb.velocity.y, 0);
+        //check if there is an attack point
+        if (attackPoint == null)
+            return;
+        //draw a wire sphere with unity's gizmo at the attackPoint's position, with a radius of attack range
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+    public void Death() 
+    {
+        //if hp is equal to or less than zero
+        if (hp <= 0)
+        {
+            //die
+            Destroy(gameObject);
+        }
     }
 
-    public void Jump() 
+    public Vector3 AngleToTarget(float angleInDegrees, bool angleIsGlobal)
     {
-        if (IsGrounded()) 
+        if (!angleIsGlobal)
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
+            angleInDegrees += transform.eulerAngles.y;
         }
-    }
-
-    public bool IsGrounded() 
-    {
-        //check if we are grounded
-        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.down, groundingDistance);
-        if (hitInfo.collider.gameObject.CompareTag("Ground"))
-        {
-            return true;
-        }
-
-        else 
-        {
-            return false;
-        }
+        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad), 0);
     }
 }
+    
+
+
+
+   
+
