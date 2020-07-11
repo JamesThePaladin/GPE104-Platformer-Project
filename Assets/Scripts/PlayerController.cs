@@ -4,24 +4,50 @@ using UnityEngine;
 
 public class PlayerController : Controller
 {
-    void Update()
+    // Start is called before the first frame update
+    void Start()
     {
-        if (pawn == null) 
+        if (pawn == null)
         {
             pawn = GameManager.instance.player.GetComponent<Pawn>();
         }
+    }
 
-        //get vertical and horizontal axi
-        float vertical = Input.GetAxis("Vertical");
-        float horizontal = Input.GetAxis("Horizontal");
-        //send vertical to pawn move function
-        pawn.Move(vertical);
-        //send horizontal to pawn rotate function
-        pawn.Rotate(horizontal);
-
-        if (Input.GetKeyDown(KeyCode.Space)) 
+    // Update is called once per frame
+    void Update()
+    {
+        //movement inputs
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            pawn.Attack();
+            if (Input.GetKey(KeyCode.A))
+            {
+                pawn.Move(-pawn.transform.right * pawn.sprintBoost);
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                pawn.Move(pawn.transform.right * pawn.sprintBoost);
+            } 
+        }
+
+        else
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                pawn.Move(-pawn.transform.right);
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                pawn.Move(pawn.transform.right);
+            } 
+        }
+
+        //jump
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            pawn.Jump();
         }
     }
 }
+
