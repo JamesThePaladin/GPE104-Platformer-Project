@@ -15,4 +15,47 @@ public class PlayerPawn : Pawn
     {
         
     }
+    void FixedUpdate()
+    {
+        UpdateAnimations();
+    }
+
+    //method for animations
+    public void UpdateAnimations()
+    {
+        if (rb.velocity.y > 0 && rb.velocity.x <= 0)
+        {
+            sr.flipX = true;
+            anim.Play("Player1Jump");
+        }
+        else if (rb.velocity.y > 0 && rb.velocity.x >= 0)
+        {
+            sr.flipX = false;
+            anim.Play("Player1Jump");
+        }
+        else if (rb.velocity.y < 0 && rb.velocity.x <= 0)
+        {
+            sr.flipX = true;
+            anim.Play("Player1Jump");
+        }
+        else if (rb.velocity.y < 0 && rb.velocity.x >= 0)
+        {
+            sr.flipX = false;
+            anim.Play("Player1Jump");
+        }
+        else if (rb.velocity.x < 0 && rb.velocity.y == 0)
+        {
+            sr.flipX = true;
+            anim.Play("Player1Walk2");
+        }
+        else if (rb.velocity.x > 0 && rb.velocity.y == 0)
+        {
+            sr.flipX = false;
+            anim.Play("Player1Walk2");
+        }
+        else
+        {
+            anim.Play("Player1Idle");
+        }
+    }
 }

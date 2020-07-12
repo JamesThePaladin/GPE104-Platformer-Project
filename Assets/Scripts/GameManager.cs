@@ -5,31 +5,31 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance; //variable that holds this instance of the GameManager
+    //variable that holds this instance of the GameManager
+    public static GameManager instance;
+    //variable for player
+    public GameObject player;
+    //variable for player's transform
+    private Transform playerTf;
+    //public player score for testing
+    public int score;
+    //lives for player
+    public int lives;
+    //amount of coins player has
+    public int coinAmount;
+    //for time on current level
+    private int sceneTime;
+    //reference to score text
+    public Text scoreText;
+    //reference to lives text
+    public Text livesText;
+    //reference to coins amount text
+    public Text coinText;
+    //to hold the time in current scene
+    public Text timeText;
 
-    public GameObject player; //variable for player
-    private Transform playerTf; //variable for player's transform
-
-    public int score; //public player score for testing
-    public int lives; //lives for player
-    public int coinAmount; //amount of coins player has
-    private int sceneTime; //for time on current level
-    public Text scoreText; //reference to score text
-    public Text livesText; //reference to lives text
-    public Text coinText; //reference to coins amount text
-    public Text timeText; //to hold the time in current scene
-
-    public GameObject fadeScreen; //for our fade screen effect
-
-    public enum GameStates 
-    {
-        MainMenu,
-        LevelOne,
-        LevelTwo,
-    }
-
-    //to hold our current game state
-    public GameStates currentState; 
+    //for our fade screen effect
+    public GameObject fadeScreen;
 
     // Start is called before the first frame update
     void Start()
@@ -66,18 +66,6 @@ public class GameManager : MonoBehaviour
         {
             player = GameObject.FindWithTag("Player"); //fill it with player
         }
-
-        //********************************
-        //TODO: Make gamestate pseudo
-        //********************************
-
-        //switch (currentState)
-        //{
-        //    default:
-        //        //set game state to main menu
-        //        //load main menu scene
-        //        break;
-        //}
     }
 
     //takes in points from other objects and adds it to the player's score
@@ -99,6 +87,7 @@ public class GameManager : MonoBehaviour
         //if lives are less than or equal to 0 game over
         if (lives <= 0)
         {
+            //Game Over
             //ask to restart?
         }
     }

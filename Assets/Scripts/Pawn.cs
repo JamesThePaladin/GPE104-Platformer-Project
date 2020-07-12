@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -10,6 +9,7 @@ public class Pawn : MonoBehaviour
     //TODO add jump and walking sounds
     //*********************************
 
+    [Header("Components")]
     //for pawn's animator
     public Animator anim;
     //for pawn's Rigidbody2D
@@ -17,15 +17,20 @@ public class Pawn : MonoBehaviour
     //game object's sprite renderer
     public SpriteRenderer sr;
 
-    //for paw speed
+    [Header("Pawn Stats")]
+    //for pawn speed
     public float speed;
     //for player sprint speed multiplier
     public float sprintBoost;
     //for pawn jump height
     public float jumpForce;
     //number of jumps left before touching the ground
-    public int jumps;
-    //float for grounding distance
+    public int maxJumps;
+    //number for current jumps
+    public int currentJumps;
+
+    [Header("Grounding")]
+    //for grounding distance
     public float groundingDistance;
 
     [Header("Animation Thresholds")]
@@ -46,79 +51,35 @@ public class Pawn : MonoBehaviour
 
     void Update()
     {
-        UpdateAnimations();
+        IsGrounded();
     }
 
-    //method for animations
-    public void UpdateAnimations() 
-    {
-        if (rb.velocity.x > 0 && rb.velocity.y == 0)
-        {
-            sr.flipX = false;
-            anim.Play("Player1Walk2");
-        }
-        else if (rb.velocity.x < 0 && rb.velocity.y == 0)
-        {
-            sr.flipX = true;
-            anim.Play("Player1Walk2");
-        }
-        else if (rb.velocity.y > 0 && rb.velocity.x < 0)
-        {
-            sr.flipX = true;
-            anim.Play("Player1Jump");
-        }
-        else if (rb.velocity.y > 0 && rb.velocity.x > 0)
-        {
-            sr.flipX = false;
-            anim.Play("Player1Jump");
-        }
-        else if (rb.velocity.y < 0 && rb.velocity.x < 0)
-        {
-            sr.flipX = true;
-            anim.Play("Player1Jump");
-        }
-        else if (rb.velocity.y < 0 && rb.velocity.x > 0)
-        {
-            sr.flipX = false;
-            anim.Play("Player1Jump");
-        }
-        else
-        {
-            anim.Play("Player1Idle");
-        }
-    }
-
-    public void Move(Vector3 direction)
+    public void Move(Vector2 direction)
     {
         //move the rigidbody by x input multiplied by speed. pass y axis 0
-        rb.velocity = new Vector3(direction.x * speed, rb.velocity.y, 0);
+        rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
     }
 
     public void Jump() 
     {
-        if (IsGrounded()) 
+        if (IsGrounded())
         {
-            jumps--;
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
-        }
-        else if (jumps > 0)
-        {
-            jumps--;
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
 
-    public bool IsGrounded() 
+    //bool for checking if player is grounded
+    public bool IsGrounded()
     {
         //check if we are grounded
         RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.down, groundingDistance);
-        if (hitInfo.collider.gameObject.CompareTag("Ground"))
+        if (hitInfo.collider.CompareTag("Ground"))
         {
-            jumps++;
+            currentJumps = maxJumps;
             return true;
         }
 
-        else 
+        else
         {
             return false;
         }

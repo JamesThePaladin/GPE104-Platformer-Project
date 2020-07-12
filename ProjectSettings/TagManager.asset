@@ -11,6 +11,9 @@ TagManager:
   - CoinCollect
   - JumpSound
   - WalkSound
+  - Walker
+  - WalkerController
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -20,8 +23,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Ground
+  - Enemies
   - 
   - 
   - 

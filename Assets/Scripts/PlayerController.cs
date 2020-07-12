@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : Controller
 {
+    //to hold the moveInput
+    private float moveInput;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,32 +22,23 @@ public class PlayerController : Controller
         //movement inputs
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                pawn.Move(-pawn.transform.right * pawn.sprintBoost);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                pawn.Move(pawn.transform.right * pawn.sprintBoost);
-            } 
+            moveInput = Input.GetAxis("Horizontal") * pawn.sprintBoost;
+            pawn.Move(new Vector2(moveInput, 0));
         }
 
         else
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                pawn.Move(-pawn.transform.right);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                pawn.Move(pawn.transform.right);
-            } 
+            moveInput = Input.GetAxis("Horizontal");
+            pawn.Move(new Vector2(moveInput, 0));
         }
 
         //jump
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Jump") && pawn.currentJumps > 0)
+        {
+            pawn.currentJumps--;
+            pawn.Jump();
+        }
+        else if (Input.GetButtonDown("Jump") && pawn.currentJumps == 0 && pawn.IsGrounded()) 
         {
             pawn.Jump();
         }
