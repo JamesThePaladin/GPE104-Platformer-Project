@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class PlayerPawn : Pawn
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //thresholds for playing animations
+    public float animXDeadZone;
+    public float animYDeadZone;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void FixedUpdate()
     {
         UpdateAnimations();
@@ -23,32 +16,32 @@ public class PlayerPawn : Pawn
     //method for animations
     public void UpdateAnimations()
     {
-        if (rb.velocity.y > 0 && rb.velocity.x <= 0)
+        if (rb.velocity.y > animYDeadZone && rb.velocity.x <= animXDeadZone)
         {
             sr.flipX = true;
             anim.Play("Player1Jump");
         }
-        else if (rb.velocity.y > 0 && rb.velocity.x >= 0)
+        else if (rb.velocity.y > animYDeadZone && rb.velocity.x >= animXDeadZone)
         {
             sr.flipX = false;
             anim.Play("Player1Jump");
         }
-        else if (rb.velocity.y < 0 && rb.velocity.x <= 0)
+        else if (rb.velocity.y < animYDeadZone && rb.velocity.x <= animXDeadZone)
         {
             sr.flipX = true;
             anim.Play("Player1Jump");
         }
-        else if (rb.velocity.y < 0 && rb.velocity.x >= 0)
+        else if (rb.velocity.y < animYDeadZone && rb.velocity.x >= animXDeadZone)
         {
             sr.flipX = false;
             anim.Play("Player1Jump");
         }
-        else if (rb.velocity.x < 0 && rb.velocity.y == 0)
+        else if (rb.velocity.x < animXDeadZone && rb.velocity.y == animYDeadZone)
         {
             sr.flipX = true;
             anim.Play("Player1Walk2");
         }
-        else if (rb.velocity.x > 0 && rb.velocity.y == 0)
+        else if (rb.velocity.x > animXDeadZone && rb.velocity.y == animYDeadZone)
         {
             sr.flipX = false;
             anim.Play("Player1Walk2");

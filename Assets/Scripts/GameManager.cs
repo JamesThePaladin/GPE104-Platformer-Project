@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     //variable for player's transform
     private Transform playerTf;
+    //variable for checkpoint respawns
+    public Vector2 respawnPoint;
     //public player score for testing
     public int score;
     //lives for player
@@ -18,7 +21,7 @@ public class GameManager : MonoBehaviour
     //amount of coins player has
     public int coinAmount;
     //for time on current level
-    private int sceneTime;
+    private float sceneTime;
     //reference to score text
     public Text scoreText;
     //reference to lives text
@@ -68,6 +71,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void FixedUpdate() 
+    {
+        //update time display
+        LevelTime();
+    }
+
     //takes in points from other objects and adds it to the player's score
     public void ScorePoints(int addPoints)
     {
@@ -75,6 +84,15 @@ public class GameManager : MonoBehaviour
         score += addPoints;
         //update score text in UI
         scoreText.text = " x" + score;
+    }
+
+    //displays current level time
+    public void LevelTime() 
+    {
+        //update time
+        sceneTime += Time.deltaTime;
+        //update display
+        timeText.text = " " + sceneTime;
     }
 
     public void LoseLife()
@@ -87,8 +105,7 @@ public class GameManager : MonoBehaviour
         //if lives are less than or equal to 0 game over
         if (lives <= 0)
         {
-            //Game Over
-            //ask to restart?
+            SceneManager.LoadScene(4);
         }
     }
 
@@ -98,5 +115,12 @@ public class GameManager : MonoBehaviour
         coinAmount += addCoins;
         //update score text in UI
         coinText.text = "" + coinAmount;
+    }
+
+    public void OnPlayerDeath() 
+    {
+        LoseLife();
+        //send the player to their last checkpoint
+        player.transform.position = respawnPoint;
     }
 }

@@ -10,6 +10,8 @@ public class WalkerPawn : Pawn
     /// I have adapted it to work with my controller
     /// </summary>
     /// 
+    //to hold Walker's death sound
+    public AudioSource deathSound;
     //to hold the walker's death explosion
     public GameObject explosion;
     //transform for ground detection
@@ -24,7 +26,7 @@ public class WalkerPawn : Pawn
     // Start is called before the first frame update
     void Start()
     {
-        
+        deathSound = GameObject.FindWithTag("WalkerDeathSound").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -59,8 +61,18 @@ public class WalkerPawn : Pawn
             GameManager.instance.SendMessage("ScorePoints", points);
             //make an explosion
             anim.Play("DeathAnim");
+            //play death sound
+            deathSound.Play();
             //destroy the asteroid
             Destroy(this.gameObject, 3f);
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            GameManager.instance.OnPlayerDeath();
         }
     }
 }

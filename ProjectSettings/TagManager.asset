@@ -14,6 +14,7 @@ TagManager:
   - Walker
   - WalkerController
   - Enemy
+  - WalkerDeathSound
   layers:
   - Default
   - TransparentFX

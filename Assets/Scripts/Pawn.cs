@@ -62,10 +62,7 @@ public class Pawn : MonoBehaviour
 
     public void Jump() 
     {
-        if (IsGrounded())
-        {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
     }
 
     //bool for checking if player is grounded
