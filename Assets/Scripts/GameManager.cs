@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     //variable for player
     public GameObject player;
-    //variable for player's transform
-    private Transform playerTf;
     //variable for checkpoint respawns
     public Vector2 respawnPoint;
     //public player score for testing

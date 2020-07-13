@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerPawn : Pawn
 {
+    [Header("Animation Thresholds")]
     //thresholds for playing animations
     public float animXDeadZone;
     public float animYDeadZone;

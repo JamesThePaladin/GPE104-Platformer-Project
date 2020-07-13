@@ -15,6 +15,7 @@ TagManager:
   - WalkerController
   - Enemy
   - WalkerDeathSound
+  - HUD
   layers:
   - Default
   - TransparentFX

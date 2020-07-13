@@ -6,10 +6,11 @@ using UnityEngine;
 public class WalkerPawn : Pawn
 {
     /// <summary>
-    /// Walker platform patrol is courtesy of Blackthornprod
+    /// Walker Ground Detection is courtesy of Blackthornprod
     /// I have adapted it to work with my controller
     /// </summary>
-    /// 
+    ///
+    
     //to hold Walker's death sound
     public AudioSource deathSound;
     //to hold the walker's death explosion
@@ -64,7 +65,7 @@ public class WalkerPawn : Pawn
             //play death sound
             deathSound.Play();
             //destroy the asteroid
-            Destroy(this.gameObject, 3f);
+            Destroy(this.gameObject, 1f);
         }
     }
 

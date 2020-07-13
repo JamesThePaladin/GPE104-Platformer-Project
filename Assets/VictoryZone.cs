@@ -11,13 +11,6 @@ public class VictoryZone : MonoBehaviour
         {
             Debug.Log("Victory!");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            //Wait();
         }
     }
-
-    //IEnumerator Wait()
-    //{
-    //    yield return new WaitForSeconds(3f);
-    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    //}
 }

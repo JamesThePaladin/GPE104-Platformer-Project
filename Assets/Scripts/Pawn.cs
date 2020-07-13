@@ -5,10 +5,6 @@ using UnityEngine.U2D;
 
 public class Pawn : MonoBehaviour
 {
-    //*********************************
-    //TODO add jump and walking sounds
-    //*********************************
-
     [Header("Components")]
     //for pawn's animator
     public Animator anim;
@@ -32,14 +28,6 @@ public class Pawn : MonoBehaviour
     [Header("Grounding")]
     //for grounding distance
     public float groundingDistance;
-
-    [Header("Animation Thresholds")]
-    //float for jump animation threshold
-    public float yThreshold;
-    //float for walk animation threshold
-    public float xThreshold;
-    
-
 
     void Start()
     {
